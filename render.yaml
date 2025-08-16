@@ -3,7 +3,7 @@ services:
     name: ai-meeting-summarizer
     env: node
     plan: free
-    buildCommand: npm run install-all && npm run build
+    buildCommand: npm install --production && cd client && npm install --production && npm run build
     startCommand: npm start
     envVars:
       - key: NODE_ENV
