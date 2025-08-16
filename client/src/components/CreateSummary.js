@@ -84,8 +84,8 @@ const CreateSummary = () => {
         title: formData.title || 'Untitled Summary'
       });
 
-      setGeneratedSummary(response.data.summary);
-      console.log(response.data.summary);
+      setGeneratedSummary(response.data.summary.generatedSummary);
+       
       toast.success('Summary generated successfully!');
     } catch (error) {
       console.error('Error generating summary:', error);
