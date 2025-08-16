@@ -24,10 +24,14 @@ const Dashboard = () => {
   const fetchSummaries = async () => {
     try {
       const response = await axios.get('/api/summary');
-      setSummaries(response.data);
+      const data = Array.isArray(response.data) 
+        ? response.data 
+        : response.data.data || []; // fallback if wrapped
+      setSummaries(data);
     } catch (error) {
       console.error('Error fetching summaries:', error);
       toast.error('Failed to load summaries');
+      setSummaries([]); // fallback to empty array
     } finally {
       setLoading(false);
     }
@@ -46,10 +50,13 @@ const Dashboard = () => {
     }
   };
 
-  const filteredSummaries = summaries.filter(summary =>
-    summary.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    summary.customPrompt.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredSummaries = Array.isArray(summaries)
+  ? summaries.filter(summary =>
+      (summary.title || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (summary.customPrompt || '').toLowerCase().includes(searchTerm.toLowerCase())
+    )
+  : [];
+
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('en-US', {
