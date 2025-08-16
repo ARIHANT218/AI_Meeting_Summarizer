@@ -3,11 +3,15 @@ services:
     name: ai-meeting-summarizer
     env: node
     plan: free
-    buildCommand: npm install --production && cd client && npm install --production && npm run build
+    buildCommand: chmod +x build.sh && ./build.sh
     startCommand: npm start
     envVars:
       - key: NODE_ENV
         value: production
+      - key: NODE_OPTIONS
+        value: "--max-old-space-size=512"
+      - key: NPM_CONFIG_CACHE
+        value: "/tmp/.npm"
       - key: MONGODB_URI
         sync: false
       - key: JWT_SECRET
@@ -17,4 +21,4 @@ services:
       - key: EMAIL_PASS
         sync: false
       - key: GEMINI_API_KEY
-        sync: false 
+        sync: false
