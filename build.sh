@@ -18,10 +18,10 @@ rm -rf client/build
 echo "📦 Installing server dependencies..."
 npm install --production --no-optional --no-audit --no-fund --no-save
 
-# Install client dependencies (production only)
+# Install client dependencies (including build tools)
 echo "📦 Installing client dependencies..."
 cd client
-npm install --production --no-optional --no-audit --no-fund --no-save
+npm install --no-optional --no-audit --no-fund --no-save
 
 # Build with memory optimization
 echo " Building React app..."
