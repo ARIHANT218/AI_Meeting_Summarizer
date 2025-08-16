@@ -2,6 +2,16 @@
 
 A full-stack MERN application that uses AI to generate, edit, and share meeting summaries based on custom prompts.
 
+
+LIVE : https://ai-meeting-summarizer-6800.onrender.com/dashboard
+
+photos:
+<img width="1354" height="673" alt="image" src="https://github.com/user-attachments/assets/702ea7b9-7432-400a-aba7-672bdae0d52c" />
+
+
+<img width="1360" height="673" alt="image" src="https://github.com/user-attachments/assets/c7f701da-db8d-44d8-96ac-454a7a07e00a" />
+
+
 ## Features
 
 - **AI-Powered Summarization**: Generate structured summaries using Google's Gemini AI models
