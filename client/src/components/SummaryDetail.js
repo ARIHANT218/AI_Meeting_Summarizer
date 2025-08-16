@@ -33,10 +33,15 @@ const SummaryDetail = () => {
     fetchSummary();
   }, [id]);
 
+  
+
   const fetchSummary = async () => {
     try {
       const response = await axios.get(`/api/summary/${id}`);
+  
+      // response.data is already the summary object
       setSummary(response.data);
+  
       setEditedSummary(response.data.editedSummary || response.data.generatedSummary);
     } catch (error) {
       console.error('Error fetching summary:', error);
@@ -46,6 +51,7 @@ const SummaryDetail = () => {
       setLoading(false);
     }
   };
+  
 
   const handleSave = async () => {
     if (!editedSummary.trim()) {
