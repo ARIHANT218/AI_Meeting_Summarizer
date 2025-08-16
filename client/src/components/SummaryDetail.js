@@ -33,14 +33,15 @@ const SummaryDetail = () => {
     fetchSummary();
   }, [id]);
 
-  
+
 
   const fetchSummary = async () => {
     try {
       const response = await axios.get(`/api/summary/${id}`);
   
       // response.data is already the summary object
-      setSummary(response.data);
+      setSummary(response.data.summary || response.data.generatedSummary);
+
   
       setEditedSummary(response.data.editedSummary || response.data.generatedSummary);
     } catch (error) {
