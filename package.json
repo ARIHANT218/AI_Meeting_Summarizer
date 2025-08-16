@@ -9,10 +9,9 @@
     "client": "cd client && npm start",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "build": "cd client && npm run build",
-    "install-client": "cd client && npm install",
-    "install-server": "npm install",
-    "install-all": "npm run install-server && npm run install-client",
-    "postinstall": "npm run install-all"
+    "install-client": "cd client && npm install --production --no-optional --no-audit --no-fund",
+    "install-server": "npm install --production --no-optional --no-audit --no-fund",
+    "install-all": "npm run install-server && npm run install-client"
   },
   "keywords": [
     "ai",

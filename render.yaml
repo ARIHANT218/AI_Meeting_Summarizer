@@ -12,6 +12,10 @@ services:
         value: "--max-old-space-size=512"
       - key: NPM_CONFIG_CACHE
         value: "/tmp/.npm"
+      - key: CI
+        value: "false"
+      - key: GENERATE_SOURCEMAP
+        value: "false"
       - key: MONGODB_URI
         sync: false
       - key: JWT_SECRET
