@@ -39,10 +39,8 @@ const SummaryDetail = () => {
     try {
       const response = await axios.get(`/api/summary/${id}`);
   
-      // response.data is already the summary object
-      setSummary(response.data.summary || response.data.generatedSummary);
-
-  
+      // Fix: response.data is the summary object directly
+      setSummary(response.data);
       setEditedSummary(response.data.editedSummary || response.data.generatedSummary);
     } catch (error) {
       console.error('Error fetching summary:', error);
@@ -67,6 +65,7 @@ const SummaryDetail = () => {
         title: summary.title
       });
       
+      // Fix: Access the summary from the correct response structure
       setSummary(response.data.summary);
       setEditing(false);
       toast.success('Summary updated successfully!');

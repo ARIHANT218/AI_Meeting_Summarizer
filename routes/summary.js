@@ -65,7 +65,8 @@ Please provide a well-structured summary based on the custom instruction.`;
 
     res.status(201).json({
       message: 'Summary generated successfully',
-      generatedSummary
+      summary: summary,
+      generatedSummary: generatedSummary
     });
   } catch (error) {
     console.error('Summary generation error:', error);

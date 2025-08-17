@@ -84,7 +84,8 @@ const CreateSummary = () => {
         title: formData.title || 'Untitled Summary'
       });
 
-      setGeneratedSummary(response.data.summary.generatedSummary);
+      // Fix: Access the correct property from response
+      setGeneratedSummary(response.data.generatedSummary);
        
       toast.success('Summary generated successfully!');
     } catch (error) {
@@ -102,14 +103,28 @@ const CreateSummary = () => {
     }
 
     try {
+      // Fix: Create a new summary with the generated content
       const response = await axios.post('/api/summary/generate', {
         originalText: formData.originalText,
         customPrompt: formData.customPrompt,
         title: formData.title || 'Untitled Summary'
       });
 
+      // Fix: Navigate to the summary detail page using the correct ID
+      if (response.data.summary && response.data.summary._id) {
+        navigate(`/summary/${response.data.summary._id}`);
+      } else {
+        // Fallback: try to get the ID from the response
+        const summaryId = response.data._id || response.data.id;
+        if (summaryId) {
+          navigate(`/summary/${summaryId}`);
+        } else {
+          toast.error('Summary saved but could not navigate to detail page');
+          navigate('/dashboard');
+        }
+      }
+      
       toast.success('Summary saved successfully!');
-      navigate(`/summary/${response.data.summary._id}`);
     } catch (error) {
       console.error('Error saving summary:', error);
       toast.error('Failed to save summary');
