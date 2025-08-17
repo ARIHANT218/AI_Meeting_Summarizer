@@ -19,7 +19,6 @@ const CreateSummary = () => {
     customPrompt: ''
   });
   const [loading, setLoading] = useState(false);
-  const [generatedSummary, setGeneratedSummary] = useState('');
   const [showPromptSuggestions, setShowPromptSuggestions] = useState(false);
 
   const promptSuggestions = [
@@ -69,7 +68,7 @@ const CreateSummary = () => {
 
   const handleGenerateSummary = async (e) => {
     e.preventDefault();
-    
+
     if (!formData.originalText.trim() || !formData.customPrompt.trim()) {
       toast.error('Please provide both the original text and custom prompt');
       return;
@@ -84,50 +83,16 @@ const CreateSummary = () => {
         title: formData.title || 'Untitled Summary'
       });
 
-      // Fix: Access the correct property from response
-      setGeneratedSummary(response.data.generatedSummary);
-       
+      const summary = response.data.summary;
+
       toast.success('Summary generated successfully!');
+      // Navigate to detail page directly
+      navigate(`/summary/${summary._id}`);
     } catch (error) {
       console.error('Error generating summary:', error);
       toast.error(error.response?.data?.message || 'Failed to generate summary');
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleSaveSummary = async () => {
-    if (!generatedSummary.trim()) {
-      toast.error('No summary to save');
-      return;
-    }
-
-    try {
-      // Fix: Create a new summary with the generated content
-      const response = await axios.post('/api/summary/generate', {
-        originalText: formData.originalText,
-        customPrompt: formData.customPrompt,
-        title: formData.title || 'Untitled Summary'
-      });
-
-      // Fix: Navigate to the summary detail page using the correct ID
-      if (response.data.summary && response.data.summary._id) {
-        navigate(`/summary/${response.data.summary._id}`);
-      } else {
-        // Fallback: try to get the ID from the response
-        const summaryId = response.data._id || response.data.id;
-        if (summaryId) {
-          navigate(`/summary/${summaryId}`);
-        } else {
-          toast.error('Summary saved but could not navigate to detail page');
-          navigate('/dashboard');
-        }
-      }
-      
-      toast.success('Summary saved successfully!');
-    } catch (error) {
-      console.error('Error saving summary:', error);
-      toast.error('Failed to save summary');
     }
   };
 
@@ -157,7 +122,7 @@ const CreateSummary = () => {
               <FileText className="w-5 h-5 mr-2 text-primary-600" />
               Meeting Details
             </h2>
-            
+
             <div className="space-y-4">
               <div>
                 <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">
@@ -228,7 +193,7 @@ const CreateSummary = () => {
                     <Lightbulb className="w-4 h-4" />
                   </button>
                 </div>
-                
+
                 {showPromptSuggestions && (
                   <div className="mt-2 p-3 bg-gray-50 rounded-lg border">
                     <p className="text-sm font-medium text-gray-700 mb-2">Quick suggestions:</p>
@@ -265,51 +230,8 @@ const CreateSummary = () => {
           </div>
         </div>
 
-        {/* Output Section */}
+        {/* Tips Section */}
         <div className="space-y-6">
-          <div className="card">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
-              <Sparkles className="w-5 h-5 mr-2 text-primary-600" />
-              Generated Summary
-            </h2>
-            
-            {generatedSummary ? (
-              <div className="space-y-4">
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <div className="whitespace-pre-wrap text-gray-800 leading-relaxed">
-                    {generatedSummary}
-                  </div>
-                </div>
-                
-                <div className="flex space-x-3">
-                  <button
-                    onClick={handleSaveSummary}
-                    className="btn-primary flex items-center"
-                  >
-                    <Save className="w-4 h-4 mr-2" />
-                    Save Summary
-                  </button>
-                  
-                  <button
-                    onClick={() => setGeneratedSummary('')}
-                    className="btn-secondary"
-                  >
-                    Clear
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <div className="text-center py-12">
-                <Sparkles className="mx-auto h-12 w-12 text-gray-300" />
-                <h3 className="mt-2 text-sm font-medium text-gray-900">No summary yet</h3>
-                <p className="mt-1 text-sm text-gray-500">
-                  Fill in the details on the left and click "Generate Summary" to get started.
-                </p>
-              </div>
-            )}
-          </div>
-
-          {/* Tips */}
           <div className="card bg-blue-50 border-blue-200">
             <h3 className="text-lg font-medium text-blue-900 mb-2">💡 Tips for Better Summaries</h3>
             <ul className="text-sm text-blue-800 space-y-1">
@@ -325,4 +247,4 @@ const CreateSummary = () => {
   );
 };
 
-export default CreateSummary; 
+export default CreateSummary;

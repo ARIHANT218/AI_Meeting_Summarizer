@@ -32,11 +32,14 @@ const SummaryDetail = () => {
   useEffect(() => {
     const fetchSummary = async () => {
       try {
-        const response = await axios.get(`/api/summary/${id}`);
-    
-        // Fix: response.data is the summary object directly
-        setSummary(response.data);
-        setEditedSummary(response.data.editedSummary || response.data.generatedSummary);
+        const response = await axios.get(`/api/summary/${id}`, {
+          headers: { 'Cache-Control': 'no-cache' } // Prevent caching issues
+        });
+
+        // Adjust depending on backend response structure
+        const data = response.data.summary || response.data; 
+        setSummary(data);
+        setEditedSummary(data.editedSummary || data.generatedSummary || '');
       } catch (error) {
         console.error('Error fetching summary:', error);
         toast.error('Failed to load summary');
@@ -61,9 +64,9 @@ const SummaryDetail = () => {
         editedSummary,
         title: summary.title
       });
-      
-      // Fix: Access the summary from the correct response structure
-      setSummary(response.data.summary);
+
+      const updatedSummary = response.data.summary || response.data;
+      setSummary(updatedSummary);
       setEditing(false);
       toast.success('Summary updated successfully!');
     } catch (error) {
@@ -89,7 +92,7 @@ const SummaryDetail = () => {
 
   const handleShare = async () => {
     const recipients = shareData.recipients.split(',').map(email => email.trim()).filter(email => email);
-    
+
     if (recipients.length === 0) {
       toast.error('Please enter at least one recipient email');
       return;
@@ -102,7 +105,7 @@ const SummaryDetail = () => {
         subject: shareData.subject || `Meeting Summary: ${summary.title}`,
         message: shareData.message
       });
-      
+
       toast.success('Summary shared successfully!');
       setShowShareModal(false);
       setShareData({ recipients: '', subject: '', message: '' });
@@ -171,7 +174,7 @@ const SummaryDetail = () => {
               <button
                 onClick={() => {
                   setEditing(false);
-                  setEditedSummary(summary.editedSummary || summary.generatedSummary);
+                  setEditedSummary(summary.editedSummary || summary.generatedSummary || '');
                 }}
                 className="btn-secondary"
               >
@@ -260,7 +263,7 @@ const SummaryDetail = () => {
         ) : (
           <div className="bg-gray-50 rounded-lg p-6">
             <div className="whitespace-pre-wrap text-gray-800 leading-relaxed">
-              {summary.editedSummary || summary.generatedSummary}
+              {summary.editedSummary || summary.generatedSummary || 'No summary available.'}
             </div>
           </div>
         )}
@@ -271,7 +274,7 @@ const SummaryDetail = () => {
         <h2 className="text-xl font-semibold text-gray-900 mb-4">Original Meeting Transcript</h2>
         <div className="bg-gray-50 rounded-lg p-6 max-h-64 overflow-y-auto">
           <div className="whitespace-pre-wrap text-gray-700 text-sm leading-relaxed">
-            {summary.originalText}
+            {summary.originalText || 'No transcript available.'}
           </div>
         </div>
       </div>
@@ -284,7 +287,7 @@ const SummaryDetail = () => {
               <Mail className="w-5 h-5 mr-2 text-primary-600" />
               Share Summary
             </h3>
-            
+
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -349,4 +352,4 @@ const SummaryDetail = () => {
   );
 };
 
-export default SummaryDetail; 
+export default SummaryDetail;

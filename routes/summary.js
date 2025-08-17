@@ -4,11 +4,9 @@ const Summary = require('../models/Summary');
 const auth = require('../middleware/auth');
 
 const router = express.Router();
-
-// Initialize Google Gemini AI
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
-// Test route to check available models
+// Test route
 router.get('/test-models', async (req, res) => {
   try {
     const models = await genAI.listModels();
@@ -19,7 +17,7 @@ router.get('/test-models', async (req, res) => {
   }
 });
 
-// Generate summary using AI
+// Generate summary
 router.post('/generate', auth, async (req, res) => {
   try {
     const { originalText, customPrompt, title } = req.body;
@@ -28,14 +26,11 @@ router.post('/generate', auth, async (req, res) => {
       return res.status(400).json({ message: 'Original text and custom prompt are required' });
     }
 
-    // Generate summary using Gemini
-    let model;
+    // Generate summary using Gemini AI
     let generatedSummary;
-    
     try {
-      // Use the correct Gemini model
-      model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-      
+      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
       const prompt = `You are a professional meeting summarizer. Create clear, structured summaries based on the user's specific requirements.
 
 Original text: ${originalText}
@@ -51,22 +46,22 @@ Please provide a well-structured summary based on the custom instruction.`;
       throw new Error('Failed to generate content with AI model');
     }
 
-    // Create new summary
+    // Save summary
     const summary = new Summary({
       user: req.user._id,
       originalText,
       customPrompt,
       generatedSummary,
-      editedSummary: generatedSummary,
+      editedSummary: generatedSummary, // initially same
       title: title || 'Untitled Summary'
     });
 
     await summary.save();
 
-    res.status(201).json({
+    // ✅ Return consistent JSON shape for frontend
+    res.status(201).json({ 
       message: 'Summary generated successfully',
-      summary: summary,
-      generatedSummary: generatedSummary
+      summary 
     });
   } catch (error) {
     console.error('Summary generation error:', error);
@@ -77,10 +72,8 @@ Please provide a well-structured summary based on the custom instruction.`;
 // Get all summaries for a user
 router.get('/', auth, async (req, res) => {
   try {
-    const summaries = await Summary.find({ user: req.user._id })
-      .sort({ createdAt: -1 });
-    
-    res.json(summaries);
+    const summaries = await Summary.find({ user: req.user._id }).sort({ createdAt: -1 });
+    res.json({ summaries }); // wrap in object for consistency
   } catch (error) {
     console.error('Get summaries error:', error);
     res.status(500).json({ message: 'Error fetching summaries' });
@@ -90,16 +83,12 @@ router.get('/', auth, async (req, res) => {
 // Get single summary
 router.get('/:id', auth, async (req, res) => {
   try {
-    const summary = await Summary.findOne({
-      _id: req.params.id,
-      user: req.user._id
-    });
+    const summary = await Summary.findOne({ _id: req.params.id, user: req.user._id });
+    if (!summary) return res.status(404).json({ message: 'Summary not found' });
 
-    if (!summary) {
-      return res.status(404).json({ message: 'Summary not found' });
-    }
-
-    res.json(summary);
+    // ✅ Disable caching
+    res.set('Cache-Control', 'no-store');
+    res.json({ summary }); // wrap in object
   } catch (error) {
     console.error('Get summary error:', error);
     res.status(500).json({ message: 'Error fetching summary' });
@@ -112,27 +101,14 @@ router.put('/:id', auth, async (req, res) => {
     const { editedSummary, title, tags } = req.body;
 
     const summary = await Summary.findOneAndUpdate(
-      {
-        _id: req.params.id,
-        user: req.user._id
-      },
-      {
-        editedSummary,
-        title,
-        tags,
-        updatedAt: Date.now()
-      },
+      { _id: req.params.id, user: req.user._id },
+      { editedSummary, title, tags, updatedAt: Date.now() },
       { new: true }
     );
 
-    if (!summary) {
-      return res.status(404).json({ message: 'Summary not found' });
-    }
+    if (!summary) return res.status(404).json({ message: 'Summary not found' });
 
-    res.json({
-      message: 'Summary updated successfully',
-      summary
-    });
+    res.json({ message: 'Summary updated successfully', summary });
   } catch (error) {
     console.error('Update summary error:', error);
     res.status(500).json({ message: 'Error updating summary' });
@@ -142,14 +118,8 @@ router.put('/:id', auth, async (req, res) => {
 // Delete summary
 router.delete('/:id', auth, async (req, res) => {
   try {
-    const summary = await Summary.findOneAndDelete({
-      _id: req.params.id,
-      user: req.user._id
-    });
-
-    if (!summary) {
-      return res.status(404).json({ message: 'Summary not found' });
-    }
+    const summary = await Summary.findOneAndDelete({ _id: req.params.id, user: req.user._id });
+    if (!summary) return res.status(404).json({ message: 'Summary not found' });
 
     res.json({ message: 'Summary deleted successfully' });
   } catch (error) {
@@ -158,4 +128,4 @@ router.delete('/:id', auth, async (req, res) => {
   }
 });
 
-module.exports = router; 
+module.exports = router;
