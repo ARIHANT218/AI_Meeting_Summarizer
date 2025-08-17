@@ -30,24 +30,24 @@ const SummaryDetail = () => {
   });
 
   useEffect(() => {
-    fetchSummary();
-  }, [id]);
+    const fetchSummary = async () => {
+      try {
+        const response = await axios.get(`/api/summary/${id}`);
+    
+        // Fix: response.data is the summary object directly
+        setSummary(response.data);
+        setEditedSummary(response.data.editedSummary || response.data.generatedSummary);
+      } catch (error) {
+        console.error('Error fetching summary:', error);
+        toast.error('Failed to load summary');
+        navigate('/dashboard');
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const fetchSummary = async () => {
-    try {
-      const response = await axios.get(`/api/summary/${id}`);
-  
-      // Fix: response.data is the summary object directly
-      setSummary(response.data);
-      setEditedSummary(response.data.editedSummary || response.data.generatedSummary);
-    } catch (error) {
-      console.error('Error fetching summary:', error);
-      toast.error('Failed to load summary');
-      navigate('/dashboard');
-    } finally {
-      setLoading(false);
-    }
-  };
+    fetchSummary();
+  }, [id, navigate]);
 
   const handleSave = async () => {
     if (!editedSummary.trim()) {
