@@ -6,7 +6,9 @@ A full-stack MERN application that uses AI to generate, edit, and share meeting 
 LIVE : https://ai-meeting-summarizer-6800.onrender.com/dashboard
 
 photos:
-<img width="1354" height="673" alt="image" src="https://github.com/user-attachments/assets/702ea7b9-7432-400a-aba7-672bdae0d52c" />
+
+![WhatsApp Image 2025-08-17 at 09 45 37_5aca778d](https://github.com/user-attachments/assets/90597811-f513-46bd-969d-653cc5db9708)
+
 
 
 <img width="1360" height="673" alt="image" src="https://github.com/user-attachments/assets/c7f701da-db8d-44d8-96ac-454a7a07e00a" />
