@@ -33,8 +33,6 @@ const SummaryDetail = () => {
     fetchSummary();
   }, [id]);
 
-
-
   const fetchSummary = async () => {
     try {
       const response = await axios.get(`/api/summary/${id}`);
@@ -50,7 +48,6 @@ const SummaryDetail = () => {
       setLoading(false);
     }
   };
-  
 
   const handleSave = async () => {
     if (!editedSummary.trim()) {
