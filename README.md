@@ -2,9 +2,10 @@
 
 A full-stack MERN application that uses AI to generate, edit, and share meeting summaries based on custom prompts.
 
-
+----------------
 LIVE : https://ai-meeting-summarizer-6800.onrender.com/dashboard
 
+------------------
 photos:
 
 ![WhatsApp Image 2025-08-17 at 09 45 37_5aca778d](https://github.com/user-attachments/assets/90597811-f513-46bd-969d-653cc5db9708)
@@ -29,6 +30,8 @@ photos:
 - **Dashboard**: Manage and search through all your summaries
 - **Responsive Design**: Modern UI that works on all devices
 
+--------------------
+
 ## Tech Stack
 
 ### Backend
@@ -52,6 +55,7 @@ photos:
 - Google Gemini API key
 - Email service credentials (Gmail recommended for testing)
 
+----------
 ## Installation
 
 1. **Clone the repository**
