@@ -1,4 +1,4 @@
-# AI Meeting Summarizer
+ok# AI Meeting Summarizer
 
 A full-stack MERN application that uses AI to generate, edit, and share meeting summaries based on custom prompts.
 
@@ -22,8 +22,6 @@ photos:
 ----------------------------------------------
 
 
-
-
 ## Features
 
 - **AI-Powered Summarization**: Generate structured summaries using Google's Gemini AI models
@@ -39,13 +37,16 @@ photos:
 
 
 
-## Tech Stack
-
+## Tech Stac
 ### Backend
 - **Node.js** with Express.js
+- 
 - **MongoDB** with Mongoose ODM
+- 
 - **JWT** for authentication
+- 
 - **Google Gemini API** for AI summarization
+- 
 - **Nodemailer** for email functionality
 
 ### Frontend
