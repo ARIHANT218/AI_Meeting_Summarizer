@@ -1,4 +1,7 @@
-ok# AI Meeting Summarizer
+AI Meeting Summarizer
+
+--------------------
+
 
 A full-stack MERN application that uses AI to generate, edit, and share meeting summaries based on custom prompts.
 
