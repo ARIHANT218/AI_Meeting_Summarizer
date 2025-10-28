@@ -12,14 +12,6 @@ LIVE : https://ai-meeting-summarizer-6800.onrender.com/dashboard
 ------------------
 photos:
 
-![WhatsApp Image 2025-08-17 at 09 45 37_5aca778d](https://github.com/user-attachments/assets/90597811-f513-46bd-969d-653cc5db9708)
-
-
-
-----------------------------------------------
-
-<img width="1360" height="673" alt="image" src="https://github.com/user-attachments/assets/c7f701da-db8d-44d8-96ac-454a7a07e00a" />
-
 ----------------------------------------------
 <img width="1330" height="654" alt="image" src="https://github.com/user-attachments/assets/9b3500f9-9027-4cb8-9546-7003c1f1cf62" />
 ----------------------------------------------
