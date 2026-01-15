@@ -10,6 +10,9 @@ A full-stack MERN application that uses AI to generate, edit, and share meeting 
 LIVE : https://ai-meeting-summarizer-6800.onrender.com/dashboard
 
 ------------------
+Deployed Frontend - VERCEL And Backend - RENDER 
+
+-----
 photos:
 
 ----------------------------------------------
